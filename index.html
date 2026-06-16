@@ -3,30 +3,19 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="larry wu 隔日行程預覽 — 每日自動更新的 Outlook Calendar 互動卡">
-    <meta property="og:title" content="Daily Schedule Preview — Larry Wu">
-    <meta property="og:description" content="每日 17:00 自動更新的行程預覽卡">
+    <meta name="description" content="larry wu 隔日行程預覽">
     <title>SCHEDULE PREVIEW — larry wu</title>
     <style>
-        :root {
-            color-scheme: light;
-        }
-
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-
+        :root { color-scheme: light; }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
         body {
             background-color: #f0ebe5;
-            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
             padding: 24px;
             color: #2c2c2c;
             line-height: 1.6;
             min-height: 100vh;
         }
-
         .container {
             max-width: 800px;
             margin: 0 auto;
@@ -36,13 +25,11 @@
             overflow: hidden;
             box-shadow: 0 2px 8px rgba(0,0,0,0.1);
         }
-
         .header {
             background-color: #f0ebe5;
             padding: 32px 24px;
             border-bottom: 2px solid #2c2c2c;
         }
-
         .header h1 {
             font-size: 24px;
             font-weight: 600;
@@ -51,7 +38,6 @@
             color: #2c2c2c;
             margin-bottom: 4px;
         }
-
         .header-subtitle {
             font-size: 13px;
             color: #666;
@@ -59,24 +45,9 @@
             display: flex;
             justify-content: space-between;
             align-items: center;
-            flex-wrap: wrap;
-            gap: 12px;
         }
-
-        .header-date {
-            font-family: monospace;
-            font-weight: 600;
-        }
-
-        .section {
-            border-bottom: 2px solid #2c2c2c;
-            padding: 0;
-        }
-
-        .section:last-child {
-            border-bottom: none;
-        }
-
+        .section { border-bottom: 2px solid #2c2c2c; padding: 0; }
+        .section:last-child { border-bottom: none; }
         .section-header {
             background-color: #2c2c2c;
             color: #ffffff;
@@ -87,7 +58,6 @@
             align-items: center;
             gap: 12px;
         }
-
         .section-tag {
             display: inline-block;
             background-color: #f0ebe5;
@@ -96,95 +66,19 @@
             border-radius: 2px;
             font-weight: 700;
             font-size: 12px;
-            letter-spacing: 1px;
         }
-
         .section-content {
             padding: 20px 24px;
             font-size: 13px;
             line-height: 1.8;
         }
-
         .empty-state {
             color: #999;
             font-style: italic;
             text-align: center;
             padding: 32px 24px;
         }
-
-        .event-list {
-            list-style: none;
-        }
-
-        .event-item {
-            padding: 12px 0;
-            border-bottom: 1px solid #e8e3db;
-            display: flex;
-            gap: 12px;
-            align-items: flex-start;
-        }
-
-        .event-item:last-child {
-            border-bottom: none;
-        }
-
-        .event-time {
-            font-weight: 600;
-            min-width: 70px;
-            color: #2c2c2c;
-            font-family: monospace;
-        }
-
-        .event-details {
-            flex: 1;
-        }
-
-        .event-title {
-            font-weight: 600;
-            color: #2c2c2c;
-            margin-bottom: 4px;
-        }
-
-        .event-location {
-            font-size: 12px;
-            color: #666;
-            margin-bottom: 2px;
-        }
-
-        .event-attendees {
-            font-size: 12px;
-            color: #666;
-        }
-
-        .all-day-event {
-            background-color: #f0f8f0;
-            padding: 12px;
-            margin: 8px 0;
-            border-left: 3px solid #4caf50;
-            border-radius: 2px;
-        }
-
-        .all-day-event .event-title {
-            color: #2d6b2d;
-        }
-
-        .warning-box {
-            background-color: #fff5f5;
-            border-left: 3px solid #d32f2f;
-            padding: 12px;
-            margin: 8px 0;
-            border-radius: 2px;
-            font-size: 12px;
-        }
-
-        .warning-box strong {
-            color: #d32f2f;
-        }
-
-        .suggestion-list {
-            list-style: none;
-        }
-
+        .suggestion-list { list-style: none; }
         .suggestion-item {
             padding: 8px 0;
             padding-left: 24px;
@@ -193,44 +87,12 @@
             line-height: 1.8;
             color: #333;
         }
-
         .suggestion-item::before {
-            content: attr(data-icon);
+            content: "→";
             position: absolute;
             left: 0;
-            font-size: 16px;
             font-weight: 600;
         }
-
-        .stats-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
-            gap: 12px;
-            margin: 12px 0;
-        }
-
-        .stat-card {
-            background-color: #f0f8f0;
-            border: 1px solid #d0e8d0;
-            padding: 12px;
-            text-align: center;
-            border-radius: 2px;
-        }
-
-        .stat-number {
-            font-size: 24px;
-            font-weight: 700;
-            color: #2d6b2d;
-            margin-bottom: 4px;
-        }
-
-        .stat-label {
-            font-size: 11px;
-            color: #666;
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
-        }
-
         .footer {
             background-color: #f0ebe5;
             padding: 16px 24px;
@@ -238,49 +100,6 @@
             font-size: 12px;
             color: #666;
             text-align: center;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            flex-wrap: wrap;
-            gap: 12px;
-        }
-
-        .footer-meta {
-            font-family: monospace;
-            font-size: 11px;
-        }
-
-        .refresh-indicator {
-            display: inline-block;
-            padding: 4px 8px;
-            background-color: #e8f5e9;
-            border-radius: 2px;
-            font-size: 11px;
-            color: #2d6b2d;
-        }
-
-        @media (max-width: 600px) {
-            body {
-                padding: 12px;
-            }
-
-            .header {
-                padding: 20px 16px;
-            }
-
-            .header h1 {
-                font-size: 18px;
-            }
-
-            .section-content {
-                padding: 16px;
-                font-size: 12px;
-            }
-
-            .event-time {
-                min-width: 60px;
-                font-size: 12px;
-            }
         }
     </style>
 </head>
@@ -290,11 +109,10 @@
             <h1>SCHEDULE PREVIEW</h1>
             <div class="header-subtitle">
                 <span>larry wu</span>
-                <span class="header-date" id="currentDate"></span>
+                <span id="currentDate"></span>
             </div>
         </div>
 
-        <!-- 00: Holiday Reminder -->
         <div class="section">
             <div class="section-header">
                 <span class="section-tag">00</span>
@@ -305,51 +123,46 @@
             </div>
         </div>
 
-        <!-- 01: Daily Schedule -->
         <div class="section">
             <div class="section-header">
                 <span class="section-tag">01</span>
-                當日行程 <span id="eventCount" style="margin-left: auto; font-weight: normal; font-size: 12px;"></span>
+                當日行程
             </div>
-            <div class="section-content" id="scheduleContent">
-                <p class="empty-state">載入中...</p>
+            <div class="section-content">
+                <p class="empty-state">查詢 Outlook Calendar 中的行程</p>
             </div>
         </div>
 
-        <!-- 02: Attendee Groups -->
         <div class="section">
             <div class="section-header">
                 <span class="section-tag">02</span>
                 同一參會人員群組
             </div>
-            <div class="section-content" id="attendeeContent">
+            <div class="section-content">
                 <p class="empty-state">分析參會人員重複搭配</p>
             </div>
         </div>
 
-        <!-- 03: Projects/Topics -->
         <div class="section">
             <div class="section-header">
                 <span class="section-tag">03</span>
                 同一項目/主題
             </div>
-            <div class="section-content" id="topicContent">
+            <div class="section-content">
                 <p class="empty-state">追蹤相關專案會議</p>
             </div>
         </div>
 
-        <!-- 04: Time Conflicts -->
         <div class="section">
             <div class="section-header">
                 <span class="section-tag">04</span>
                 時間相鄰/衝突分析
             </div>
-            <div class="section-content" id="conflictContent">
+            <div class="section-content">
                 <p class="empty-state">識別會議密集時段</p>
             </div>
         </div>
 
-        <!-- 05: Suggestions -->
         <div class="section">
             <div class="section-header">
                 <span class="section-tag">05</span>
@@ -357,49 +170,29 @@
             </div>
             <div class="section-content">
                 <ul class="suggestion-list">
-                    <li class="suggestion-item" data-icon="→">
-                        善用行程空檔規劃深度工作
-                    </li>
-                    <li class="suggestion-item" data-icon="→">
-                        確認重複會議的參與必要性
-                    </li>
-                    <li class="suggestion-item" data-icon="→">
-                        會議後 24 小時內完成跟進回覆
-                    </li>
-                    <li class="suggestion-item" data-icon="→">
-                        檢查近期假期規劃和時區跨越
-                    </li>
+                    <li class="suggestion-item">善用行程空檔規劃深度工作</li>
+                    <li class="suggestion-item">確認重複會議的參與必要性</li>
+                    <li class="suggestion-item">會議後 24 小時內完成跟進回覆</li>
+                    <li class="suggestion-item">檢查近期假期規劃和時區跨越</li>
                 </ul>
             </div>
         </div>
 
         <div class="footer">
-            <div>⟳ 每日 17:00 自動更新</div>
-            <div class="footer-meta" id="lastUpdated"></div>
+            ⟳ 每日 17:00 自動更新 | 最後更新：<span id="lastUpdated"></span>
         </div>
     </div>
 
     <script>
-        // 設置當前日期（隔日）
-        function updateDate() {
-            const tomorrow = new Date();
-            tomorrow.setDate(tomorrow.getDate() + 1);
-            const dateStr = tomorrow.toLocaleDateString('zh-TW', {
-                year: 'numeric',
-                month: '2-digit',
-                day: '2-digit'
-            });
-            document.getElementById('currentDate').textContent = dateStr.replace(/\//g, ' · ');
-
-            const lastUpdate = new Date().toLocaleTimeString('zh-TW');
-            document.getElementById('lastUpdated').textContent = `最後更新：${lastUpdate}`;
-        }
-
-        // 初始化
-        updateDate();
-
-        // 如果有來自 Cowork artifact 的動態資料，可以在此注入
-        // 目前顯示靜態版本，實際使用時會由 scheduled task 填入動態內容
+        const tomorrow = new Date();
+        tomorrow.setDate(tomorrow.getDate() + 1);
+        const dateStr = tomorrow.toLocaleDateString('zh-TW', {
+            year: 'numeric',
+            month: '2-digit',
+            day: '2-digit'
+        });
+        document.getElementById('currentDate').textContent = dateStr.replace(/\//g, ' · ');
+        document.getElementById('lastUpdated').textContent = new Date().toLocaleTimeString('zh-TW');
     </script>
 </body>
 </html>
