@@ -1,11 +1,13 @@
 name: 📅 Daily Schedule Update
 
+permissions:
+  contents: write
+  actions: read
+
 on:
   schedule:
-    # 每天台灣時間 17:10 執行（UTC+8 需設 09:10 UTC）
     - cron: '10 9 * * *'
   
-  # 允許手動觸發（在 Actions 標籤可手動執行）
   workflow_dispatch:
 
 jobs:
@@ -20,7 +22,6 @@ jobs:
       
       - name: ⏰ Update timestamp
         run: |
-          # 更新檔案以記錄最後更新時間
           echo "<!-- Last updated: $(date -u '+%Y-%m-%d %H:%M:%S UTC') -->" > .update-timestamp
           cat index.html >> .update-timestamp
           mv .update-timestamp index.html
