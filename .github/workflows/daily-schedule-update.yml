@@ -1,0 +1,51 @@
+name: 📅 Daily Schedule Update
+
+on:
+  schedule:
+    # 每天台灣時間 17:10 執行（UTC+8 需設 09:10 UTC）
+    - cron: '10 9 * * *'
+  
+  # 允許手動觸發（在 Actions 標籤可手動執行）
+  workflow_dispatch:
+
+jobs:
+  update-schedule:
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: 📥 Checkout repository
+        uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
+      
+      - name: ⏰ Update timestamp
+        run: |
+          # 更新檔案以記錄最後更新時間
+          echo "<!-- Last updated: $(date -u '+%Y-%m-%d %H:%M:%S UTC') -->" > .update-timestamp
+          cat index.html >> .update-timestamp
+          mv .update-timestamp index.html
+      
+      - name: 🔍 Check for changes
+        id: verify
+        run: |
+          if git diff --quiet index.html; then
+            echo "No changes detected"
+            echo "has_changes=false" >> $GITHUB_OUTPUT
+          else
+            echo "Changes detected"
+            echo "has_changes=true" >> $GITHUB_OUTPUT
+          fi
+      
+      - name: 📤 Commit and push
+        if: steps.verify.outputs.has_changes == 'true'
+        run: |
+          git config --local user.email "github-actions[bot]@users.noreply.github.com"
+          git config --local user.name "github-actions[bot]"
+          git add index.html
+          git commit -m "🔄 Auto-update: Daily schedule $(date +'%Y-%m-%d %H:%M:%S')"
+          git push
+      
+      - name: ✅ Update complete
+        run: |
+          echo "✓ Daily schedule update completed"
+          echo "Last update: $(date -u '+%Y-%m-%d %H:%M:%S UTC')"
